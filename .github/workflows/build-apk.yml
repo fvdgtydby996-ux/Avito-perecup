@@ -26,7 +26,6 @@ jobs:
       - name: Prepare web files
         run: |
           mkdir -p www
-          ls -la
           f=$(find . -name '*.html' -not -path './node_modules/*' -not -path './www/*' | head -n 1)
           echo "Found: $f"
           cp "$f" www/index.html
@@ -45,8 +44,9 @@ jobs:
             mkdir -p assets
             cp icon.png assets/icon-only.png
             cp icon.png assets/icon-foreground.png
+            convert -size 1024x1024 xc:'#02001a' assets/icon-background.png
             npm install --no-save @capacitor/assets
-            npx capacitor-assets generate --android --iconBackgroundColor '#02001a' --iconBackgroundColorDark '#02001a'
+            npx capacitor-assets generate --android
           fi
 
       - name: Build debug APK
