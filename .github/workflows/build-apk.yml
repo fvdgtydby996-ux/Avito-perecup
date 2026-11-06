@@ -44,7 +44,15 @@ jobs:
             mkdir -p assets
             cp icon.png assets/icon-only.png
             cp icon.png assets/icon-foreground.png
-            convert -size 1024x1024 xc:'#02001a' assets/icon-background.png
+            python3 - <<'PY'
+          import zlib, struct
+          w = h = 1024
+          raw = (b'\x00' + bytes([2, 0, 26]) * w) * h
+          def ch(t, d):
+              return struct.pack('>I', len(d)) + t + d + struct.pack('>I', zlib.crc32(t + d) & 0xffffffff)
+          png = b'\x89PNG\r\n\x1a\n' + ch(b'IHDR', struct.pack('>IIBBBBB', w, h, 8, 2, 0, 0, 0)) + ch(b'IDAT', zlib.compress(raw)) + ch(b'IEND', b'')
+          open('assets/icon-background.png', 'wb').write(png)
+          PY
             npm install --no-save @capacitor/assets
             npx capacitor-assets generate --android
           fi
