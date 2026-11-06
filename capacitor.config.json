@@ -1,0 +1,8 @@
+{
+  "appId": "com.avito.perekup",
+  "appName": "Авито перекуп",
+  "webDir": "www",
+  "android": {
+    "backgroundColor": "#02001a"
+  }
+}
