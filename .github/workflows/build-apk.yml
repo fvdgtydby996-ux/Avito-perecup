@@ -23,10 +23,13 @@ jobs:
           distribution: temurin
           java-version: 17
 
-      - name: Prepare web files
+            - name: Prepare web files
         run: |
           mkdir -p www
-          cp index.html www/index.html
+          ls -la
+          f=$(find . -name '*.html' -not -path './node_modules/*' -not -path './www/*' | head -n 1)
+          echo "Found: $f"
+          cp "$f" www/index.html
 
       - name: Install dependencies
         run: npm install
